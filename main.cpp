@@ -17,10 +17,7 @@ int main(void) {
         std::cout << "Worker started..." << std::endl;
 
         //Push a task into the queue
-        worker.task_queue.push(hello_task);
-
-        //Signal the eventfd to wake the worker
-        worker.wake();
+        worker.push_task(hello_task);
 
         //Wait for thread.
         std::this_thread::sleep_for(std::chrono::milliseconds(100));

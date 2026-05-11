@@ -70,6 +70,18 @@ public:
         }
     }
 
+    bool push_task(T p_task)
+    {
+        if(this->task_queue.push(p_task))
+        {
+            this->wake();
+
+            return(true);
+        }
+
+        return(false);
+    }
+
     bool wake()
     {
         uint64_t count = 1;
