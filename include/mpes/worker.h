@@ -37,7 +37,7 @@ public:
         running{true}
     {
         //If eventfd failed, we do not want to proceed or create a thread.
-        if(event_file_descriptor < 0)
+        if(this->event_file_descriptor < 0)
         {
             throw std::runtime_error("Failed to create eventfd.");
         }
@@ -62,9 +62,9 @@ public:
             }
 
             //Perform all tasks in the ring buffer while awake.
-            while(!task_queue.empty())
+            while(!this->task_queue.empty())
             {
-                T v_task = task_queue.pop();
+                T v_task = this->task_queue.pop();
                 v_task();
             }
         }
