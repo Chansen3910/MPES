@@ -20,8 +20,7 @@ int main(void) {
         worker.task_queue.push(hello_task);
 
         //Signal the eventfd to wake the worker
-        uint64_t signal = 1;
-        write(worker.event_file_descriptor, &signal, sizeof(uint64_t));
+        worker.wake();
 
         //Wait for thread.
         std::this_thread::sleep_for(std::chrono::milliseconds(100));

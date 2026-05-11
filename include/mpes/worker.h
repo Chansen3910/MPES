@@ -29,7 +29,7 @@
 
 namespace mpes {
 
-template <typename T, std::size_t T_size>
+template <typename T, std::size_t T_ring_buffer_size>
 class Worker
 {
 public:
@@ -70,14 +70,38 @@ public:
         }
     }
 
+    bool wake()
+    {
+        uint64_t count = 1;
+
+        //Write can apparently fail?. So might as well return the status
+        if(write(this->event_file_descriptor, &count, sizeof(uint64_t)) != sizeof(uint64_t))
+        {
+            /*
+              https://man7.org/linux/man-pages/man2/write.2.html
+                "The number of bytes written may be less than count if, for
+                example, there is insufficient space on the underlying physical
+                medium, or the RLIMIT_FSIZE resource limit is encountered (see
+                setrlimit(2)), or the call was interrupted by a signal handler
+                after having written less than count bytes."
+                ...
+                "On success, the number of bytes written is returned.  On error, -1
+                is returned, and errno is set to indicate the error."
+             */
+
+            return(false);
+        }
+
+        return(true);
+    }
+
     ~Worker()
     {
         //Set running to false.
         this->running = false;
 
         //If you don't write() to wake the thread up here, IT WILL HANG ON THE KERNEL!!!
-        uint64_t wake_up_signal = 1;
-        write(event_file_descriptor, &wake_up_signal, sizeof(uint64_t));
+        this->wake();
 
         //Join the main thread.
         if(this->thread_handle.joinable())
@@ -93,7 +117,7 @@ public:
     }
 
     int event_file_descriptor;
-    mpes::RingBuffer<T, T_size> task_queue;
+    mpes::RingBuffer<T, T_ring_buffer_size> task_queue;
     std::thread thread_handle;
     bool running;
 };

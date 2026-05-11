@@ -5,7 +5,7 @@ Designed around a **staged threadpool pipeline**, where each stage of socket ser
 
 > Targets raw throughput, low per-request latency, and high connection concurrency simultaneously without sacrificing architectural clarity.
 
-**Notes**
+## Notes
 
 For this project, I'm adopting the style guide of Canonical's Mir display server.
 
@@ -27,6 +27,16 @@ Ring buffers are not staple topics of programming podcasts for no good old reaso
 It's pretty late at the time of writing this log, but if I commit one thing to this repo tonight, it will be a bare bones ring buffer class which I can tweak to my needs. My thoughts on the matter are:
  - If I'm shooting for ultimate performance and concurrency, I should really bias hard for the lockless design even though this is more of a mpsc case.. If I have enough threads in each threadpool, I may be able to control the "gap" between writes upon one worker's task buffer. LOL. It sounds stupid but, whatever. If it fails, whatever, I'll lock the write head or something whatever.
  - As long as my ring buffers are provided a large enough allocation to exceed a target benchmark, the possibility of the write head lapping the read head can be made negligible, and I don't have to worry about expansion logic or any other buffer-is-full behaviors which require blocking.
+</details>
+
+<details>
+<summary>Sunday May 10, 2026</summary>
+
+I feel bummed because I haven't been able to spend very much time getting this repo hitting the ground running, but I also just have a lot of things I must attend to beyond returning to GitHub or even working on my game or other personal projects right now.
+
+Last night after dinner, I scratched up the beginnings of the Worker class. This class is intended to be a robust way to extend associations and encapsulate behaviors with each virtual thread handle in the threadpool. The **event driven wait pattern** avoids wasting time on the CPU by delegating the waiting to the kernel. This is achieved by calling read() from the thread on a supplied file descriptor to sleep, and write() ing to that file descriptor to wake the thread up when work is ready.
+
+This morning I'm seeing a lot of obvious encapsulation opportunities as well which can make the class behavior more secure, streamlined, and predictable. Unfortunately, I can only really spend a few moments over coffee on this today though.
 </details>
 
 ## Requirements
