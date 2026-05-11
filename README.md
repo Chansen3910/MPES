@@ -16,7 +16,7 @@ I was looking around the Mir repo and the style caught me off guard. Then I foun
 ## Working Logs
 
 <details>
-**<summary>Sunday May 10, 2026</summary>**
+<summary>Sunday May 10, 2026</summary>
 
 Looking over the old codebase which I wrote years ago (and which MPES is based on), I'm seeing a lot of regrettable and embarrassing design decisions which I would never reveal to anyone.. I intend for MPES to be the best socket server I can possibly design, and, as such, I cannot just repaste this repo back on GitHub for the sake of having something on public exhibit.
 
