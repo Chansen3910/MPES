@@ -1,11 +1,25 @@
+#include "mpes/ring_buffer.h"
+
 #include <iostream>
 
 int main(void) {
-    std::cout << "Sup, welcome back to spyware github!" << std::endl;
+    mpes::RingBuffer<int, 10> rb;
 
-    std::cout << "We have no scruples against using your private repos to train ai to destroy the world and suck the fun out of everything." << std::endl;
+    if(rb.push(42))
+    {
+        std::cout << "Pushed 42 successfully!" << std::endl;
+    }
+
+    std::cout << "count: " << rb.size() << std::endl;
+    std::cout << "empty?: " << rb.empty() << std::endl;
+
+    int val = rb.pop();
+
+    std::cout << "Popped: " << val << std::endl;
+
+    std::cout << "count: " << rb.size() << std::endl;
+    std::cout << "empty?: " << rb.empty() << std::endl;
 
     std::cout << "See you" << std::endl;
-
     return(0);
 }

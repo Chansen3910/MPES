@@ -11,7 +11,14 @@ option(ENABLE_TSAN "Build with ThreadSanitizer" OFF)
 option(BUILD_TESTS "Build tests" OFF)
 option(BUILD_EXAMPLES "Build examples" OFF)
 
-add_executable(${PROJECT_NAME} main.cpp)
+add_executable(${PROJECT_NAME}
+    main.cpp
+)
+
+target_include_directories(${PROJECT_NAME} 
+    PUBLIC 
+    include/
+)
 
 if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
     target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Wpedantic -Wshadow -Wconversion)
