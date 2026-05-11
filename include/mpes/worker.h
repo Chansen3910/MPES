@@ -26,7 +26,6 @@
 #include <unistd.h>
 #include <thread>
 #include <stdexcept>
-#include <iostream>
 
 namespace mpes {
 
@@ -91,8 +90,6 @@ public:
         {
             close(this->event_file_descriptor);
         }
-
-        std::cout << "This worker is destroyed." << std::endl;
     }
 
     int event_file_descriptor;
